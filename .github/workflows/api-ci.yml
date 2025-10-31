@@ -1,0 +1,28 @@
+name: API Test Automation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-newman:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run Postman tests
+        run: |
+          newman run "Bosta Api Task/bosta-apis-security.postman_collection.json" \
+            -e "Bosta Api Task/Bosta-Stg.postman_environment.json" \
+            --reporters cli
